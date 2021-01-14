@@ -14,7 +14,7 @@ class tForwardList
 	};
 
 	Node *head;// pointer to head of linked list
-	Node *tail = new Node();
+	Node *tail;
 
 	
 	class iterator 
@@ -73,7 +73,15 @@ public:
 	}
 	iterator end()
 	{
+		return NULL;
+	}
+	iterator rbegin()
+	{
 		return iterator(tail);
+	}
+	iterator rend()
+	{
+		return NULL;
 	}
 	tForwardList(); // initializes head to null
 	tForwardList(const tForwardList &other);// copy-constructor
@@ -116,11 +124,10 @@ void tForwardList<T>::push_front(const T &val)
 {
 	Node *newNode = new Node();
 	newNode->data = val;
-	if (head == NULL && tail->prev == NULL)
+	if (head == NULL && tail == NULL)
 	{
 		head = newNode;
-		head->next = tail;
-		tail->prev = newNode;
+		tail = newNode;
 	}
 	else 
 	{
@@ -136,19 +143,17 @@ void tForwardList<T>::push_back(const T &val)
 {
 	Node *newNode = new Node();
 	newNode->data = val;
-	if (head == NULL && tail->prev == NULL)
+	if (head == NULL && tail == NULL)
 	{
 		head = newNode;
-		head->next = tail;
-		tail->prev = newNode;
+		tail = newNode;
 	}
 	else
 	{
-		Node *end = tail->prev;
+		Node *end = tail;
 		end->next = newNode;
 		newNode->prev = end;
-		newNode->next = tail;
-		tail->prev = newNode;
+		tail = newNode;
 	}
 }
 
@@ -161,6 +166,7 @@ void tForwardList<T>::pop_front()
 	if (head == tail) 
 	{
 		head = NULL;
+		tail = NULL;
 	}
 	
 	delete cur;
@@ -242,17 +248,17 @@ void tForwardList<T>::resize(size_t newSize)
 	{
 		i++;
 		Node *nodeAtI = head;
-		while (nodeAtI->next != tail && i < newSize) 
+		while (nodeAtI->next != NULL && i < newSize) 
 		{
 			nodeAtI = nodeAtI->next;
 			i++;
 		}
 		if (i == newSize) 
 		{
-			nodeAtI->next = tail;
-			tail->prev = nodeAtI;
 			Node *next = nodeAtI->next;
-			while (nodeAtI->next != tail)
+			nodeAtI->next = NULL;
+			tail = nodeAtI;
+			while (next != NULL)
 			{
 				Node *cur = next;
 				next = next->next;

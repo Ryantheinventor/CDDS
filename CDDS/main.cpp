@@ -20,18 +20,34 @@ int main()
 		std::cout << "empty\n";
 	}
 
-	dList.resize(2);
+	dList.push_front(1);
+	dList.push_front(2);
+	dList.push_front(3);
+	dList.push_front(4);
+	dList.push_front(5);
+	dList.push_front(6);
+	dList.push_front(7);
+	dList.push_front(8);
+	dList.push_front(9);
+	dList.push_front(10);
 	for (auto it = dList.begin(); it != dList.end(); ++it)
 	{
 		std::cout << (*it) << std::endl;
 	}
 	std::cout << "\n";
 
-	//I have no clue how to iterate backwards
-	/*for (auto it = dList.end(); it != dList.begin(); --it)
+	for (auto it = dList.rbegin(); it != dList.rend(); --it)
 	{
 		std::cout << (*it) << std::endl;
-	}*/
+	}
+	std::cout << "\n";
+	dList.resize(2);
+	for (auto it = dList.rbegin(); it != dList.rend(); --it)
+	{
+		std::cout << (*it) << std::endl;
+	}
+
+
 	if (dList.empty())
 	{
 		std::cout << "empty\n";
