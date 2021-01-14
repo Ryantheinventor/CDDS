@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include "tForwardList.h"
 
-void main() 
+int main() 
 {
 
 	tForwardList<int> fList;
@@ -21,15 +21,18 @@ void main()
 	}
 
 	fList.push_front(5);
-	std::cout << fList.front();
 	fList.push_front(7);
-	std::cout << fList.front();
-	
-	std::cout << fList.front();
+	fList.push_front(1);
+	fList.push_front(2);
+	fList.push_front(3);
+	for (auto it = fList.begin(); it != fList.end(); ++it)
+	{
+		std::cout << (*it) << std::endl;
+	}
 	if (fList.empty())
 	{
 		std::cout << "empty\n";
 	}
 	fList.clear();
-
+	return 0;
 }
