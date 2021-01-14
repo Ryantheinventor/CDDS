@@ -6,33 +6,36 @@
 int main() 
 {
 
-	tForwardList<int> fList;
-	if (fList.empty()) 
+	tForwardList<int> dList;
+	if (dList.empty())
 	{
 		std::cout << "empty\n";
 	}
-	fList.push_front(5);
-	fList.push_front(5);
-	fList.push_front(5);
-	fList.clear();
-	if (fList.empty())
+	dList.push_front(5);
+	dList.push_front(5);
+	dList.push_front(5);
+	dList.clear();
+	if (dList.empty())
 	{
 		std::cout << "empty\n";
 	}
 
-	fList.push_front(5);
-	fList.push_front(7);
-	fList.push_front(1);
-	fList.push_front(2);
-	fList.push_front(3);
-	for (auto it = fList.begin(); it != fList.end(); ++it)
+	dList.resize(2);
+	for (auto it = dList.begin(); it != dList.end(); ++it)
 	{
 		std::cout << (*it) << std::endl;
 	}
-	if (fList.empty())
+	std::cout << "\n";
+
+	//I have no clue how to iterate backwards
+	/*for (auto it = dList.end(); it != dList.begin(); --it)
+	{
+		std::cout << (*it) << std::endl;
+	}*/
+	if (dList.empty())
 	{
 		std::cout << "empty\n";
 	}
-	fList.clear();
+	dList.clear();
 	return 0;
 }

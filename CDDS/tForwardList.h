@@ -14,9 +14,9 @@ class tForwardList
 	};
 
 	Node *head;// pointer to head of linked list
-	Node *tail;
+	Node *tail = new Node();
 
-
+	
 	class iterator 
 	{
 		Node *cur;// current node being operated upon
@@ -82,6 +82,8 @@ public:
 
 	void push_front(const T &val);// adds element to front (i.e. head)
 	void pop_front();// removes element from front
+	void push_back(const T &val);// adds element to front (i.e. head)
+	void pop_back();// removes element from front
 
 	T &front();// returns the element at the head
 	const T &front() const;// returns the element at the head (const)
@@ -92,8 +94,6 @@ public:
 	bool empty() const;// Returns true if there are no elements
 	void clear();// Destroys every single node in the linked list
 	void resize(size_t newSize);// Resizes the linked list to contain the given number of elements. New elements are default-initialized
-private:
-	void clearAfter(Node *startNode);
 	
 	
 	
@@ -116,22 +116,70 @@ void tForwardList<T>::push_front(const T &val)
 {
 	Node *newNode = new Node();
 	newNode->data = val;
-	if (head != NULL)
+	if (head == NULL && tail->prev == NULL)
 	{
-		newNode->next = head;
+		head = newNode;
+		head->next = tail;
+		tail->prev = newNode;
 	}
 	else 
 	{
-		newNode->next = NULL;
+		Node *temp = head;
+		head = newNode;
+		head->next = temp;
+		temp->prev = newNode;
 	}
-	head = newNode;
+}
+
+template <typename T>
+void tForwardList<T>::push_back(const T &val)
+{
+	Node *newNode = new Node();
+	newNode->data = val;
+	if (head == NULL && tail->prev == NULL)
+	{
+		head = newNode;
+		head->next = tail;
+		tail->prev = newNode;
+	}
+	else
+	{
+		Node *end = tail->prev;
+		end->next = newNode;
+		newNode->prev = end;
+		newNode->next = tail;
+		tail->prev = newNode;
+	}
 }
 
 template <typename T>
 void tForwardList<T>::pop_front()
 {
-	Node *cur = head;
+	Node *cur = head; 
 	head = head->next;
+	head->prev = NULL;
+	if (head == tail) 
+	{
+		head = NULL;
+	}
+	
+	delete cur;
+}
+
+template <typename T>
+void tForwardList<T>::pop_back()
+{
+	Node *cur = tail;
+	if (head == tail)
+	{
+		head = NULL;
+		tail = NULL;
+	}
+	else
+	{
+		tail = tail->prev;
+		tail->next = NULL;
+	}
 	delete cur;
 }
 
@@ -176,6 +224,8 @@ const T &tForwardList<T>::back() const
 	return back();
 }
 
+
+//TODO this is not ready
 template <typename T>
 void tForwardList<T>::resize(size_t newSize)
 {
@@ -187,46 +237,37 @@ void tForwardList<T>::resize(size_t newSize)
 		}
 		return;
 	}
-	if (head != NULL)
+	size_t i = 0;
+	if (!empty())
 	{
-		size_t i = 1;
-		Node *cur = head;
-		Node *next = head->next;
-		while (next != NULL)
+		i++;
+		Node *nodeAtI = head;
+		while (nodeAtI->next != tail && i < newSize) 
 		{
-
-
-			if (i == newSize)
-			{
-				//destroy all remaining Nodes
-				Node *dest = next;
-				next = next->next;
-				delete dest;
-				continue;
-			}
-			next = next->next;
+			nodeAtI = nodeAtI->next;
 			i++;
 		}
-		cur->next = NULL;
+		if (i == newSize) 
+		{
+			nodeAtI->next = tail;
+			tail->prev = nodeAtI;
+			Node *next = nodeAtI->next;
+			while (nodeAtI->next != tail)
+			{
+				Node *cur = next;
+				next = next->next;
+				delete cur;
+			}
+			
+		}
 	}
 	//create nodes if there are not a newSize amount
 	while (i < newSize) 
 	{
 		//cur->next
+		i++;
+		push_back(T());
 	}
 }
 
-//something is wrong here
-template <typename T>
-void tForwardList<T>::clearAfter(Node *startNode)
-{
-	Node *nextNode = startNode->next;
-	while (nextNode != NULL)
-	{
-		Node *cur = nextNode;
-		nextNode = nextNode->next;
-		delete *cur;
-	}
-	startNode->next = NULL;
-}
 
