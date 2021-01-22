@@ -1,12 +1,12 @@
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
-#include "tForwardList.h"
+#include "tDoubleLinkList.h"
 
 int main() 
 {
 
-	tForwardList<int> dList;
+	tDoubleLinkList<int> dList;
 	if (dList.empty())
 	{
 		std::cout << "empty\n";
@@ -46,7 +46,26 @@ int main()
 	{
 		std::cout << (*it) << std::endl;
 	}
+	std::cout << "\n";
+	//tDoubleLinkList<int> aList;
+	//aList = dList;//assignment 
 
+	//dList.push_front(100);
+
+	//std::cout << aList.front();
+	//std::cout << "\n";
+	dList.push_front(10);
+	dList.push_front(10);
+	dList.push_front(10);
+	dList.push_front(10);
+	dList.push_front(10);
+	dList.push_front(10);
+	dList.remove(10);
+
+	for (auto it = dList.rbegin(); it != dList.rend(); --it)
+	{
+		std::cout << (*it) << std::endl;
+	}
 
 	if (dList.empty())
 	{

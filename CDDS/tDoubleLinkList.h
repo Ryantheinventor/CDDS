@@ -4,7 +4,7 @@
 //at this point pointers are still a bit confusing for me so i may be doing this all wrong
 
 template <typename T>
-class tForwardList 
+class tDoubleLinkList 
 {
 	struct Node
 	{
@@ -83,10 +83,10 @@ public:
 	{
 		return NULL;
 	}
-	tForwardList(); // initializes head to null
-	tForwardList(const tForwardList &other);// copy-constructor
-	tForwardList &operator=(const tForwardList &rhs);// copy-assignment
-	~tForwardList(); // delete all nodes upon destruction
+	tDoubleLinkList(); // initializes head to null
+	tDoubleLinkList(const tDoubleLinkList &other);// copy-constructor
+	tDoubleLinkList &operator=(const tDoubleLinkList &rhs);// copy-assignment
+	~tDoubleLinkList(); // delete all nodes upon destruction
 
 	void push_front(const T &val);// adds element to front (i.e. head)
 	void pop_front();// removes element from front
@@ -95,8 +95,8 @@ public:
 
 	T &front();// returns the element at the head
 	const T &front() const;// returns the element at the head (const)
-	T &back();// returns the element at the head
-	const T &back() const;// returns the element at the head (const)
+	T &back();// returns the element at the tail
+	const T &back() const;// returns the element at the tail (const)
 
 	void remove(const T &val); // removes all elements equal to the given value
 	bool empty() const;// Returns true if there are no elements
@@ -108,19 +108,43 @@ public:
 };
 
 template <typename T>
-tForwardList<T>::tForwardList() 
+tDoubleLinkList<T>::tDoubleLinkList()
 {
 	head = NULL;
+	tail = NULL;
 }
 
 template <typename T>
-tForwardList<T>::~tForwardList() 
+tDoubleLinkList<T>::tDoubleLinkList(const tDoubleLinkList &other)
+{
+	Node *cur = other.head;
+	while (cur != NULL) 
+	{
+		push_back(cur->data);
+		cur = cur->next;
+	}
+}
+
+template <typename T>
+tDoubleLinkList<T> &tDoubleLinkList<T>::operator=(const tDoubleLinkList &rhs)
+{
+	Node *cur = rhs.head;
+	while (cur != NULL)
+	{
+		push_back(cur->data);
+		cur = cur->next;
+	}
+	return *this;
+}
+
+template <typename T>
+tDoubleLinkList<T>::~tDoubleLinkList() 
 {
 	clear();
 }
 
 template <typename T>
-void tForwardList<T>::push_front(const T &val) 
+void tDoubleLinkList<T>::push_front(const T &val) 
 {
 	Node *newNode = new Node();
 	newNode->data = val;
@@ -139,7 +163,7 @@ void tForwardList<T>::push_front(const T &val)
 }
 
 template <typename T>
-void tForwardList<T>::push_back(const T &val)
+void tDoubleLinkList<T>::push_back(const T &val)
 {
 	Node *newNode = new Node();
 	newNode->data = val;
@@ -158,22 +182,24 @@ void tForwardList<T>::push_back(const T &val)
 }
 
 template <typename T>
-void tForwardList<T>::pop_front()
+void tDoubleLinkList<T>::pop_front()
 {
-	Node *cur = head; 
-	head = head->next;
-	head->prev = NULL;
-	if (head == tail) 
+	Node *cur = head;
+	if (head == tail)
 	{
 		head = NULL;
 		tail = NULL;
 	}
-	
+	else 
+	{
+		head = head->next;
+		head->prev = NULL;
+	}
 	delete cur;
 }
 
 template <typename T>
-void tForwardList<T>::pop_back()
+void tDoubleLinkList<T>::pop_back()
 {
 	Node *cur = tail;
 	if (head == tail)
@@ -190,7 +216,7 @@ void tForwardList<T>::pop_back()
 }
 
 template <typename T>
-bool tForwardList<T>::empty() const
+bool tDoubleLinkList<T>::empty() const
 {
 	return head == NULL;
 }
@@ -198,7 +224,7 @@ bool tForwardList<T>::empty() const
 
 
 template <typename T>
-void tForwardList<T>::clear() 
+void tDoubleLinkList<T>::clear() 
 {
 	while (!empty()) 
 	{
@@ -207,33 +233,32 @@ void tForwardList<T>::clear()
 }
 
 template <typename T>
-T &tForwardList<T>::front()
+T &tDoubleLinkList<T>::front()
 {
 	return head->data;
 }
 
 template <typename T>
-const T &tForwardList<T>::front() const
+const T &tDoubleLinkList<T>::front() const
 {
 	return front();
 }
 
 template <typename T>
-T &tForwardList<T>::back()
+T &tDoubleLinkList<T>::back()
 {
 	return tail->data;
 }
 
 template <typename T>
-const T &tForwardList<T>::back() const
+const T &tDoubleLinkList<T>::back() const
 {
 	return back();
 }
 
 
-//TODO this is not ready
 template <typename T>
-void tForwardList<T>::resize(size_t newSize)
+void tDoubleLinkList<T>::resize(size_t newSize)
 {
 	//resize to 0
 	if (newSize == 0)
@@ -276,4 +301,38 @@ void tForwardList<T>::resize(size_t newSize)
 	}
 }
 
+template <typename T>
+void tDoubleLinkList<T>::remove(const T &val)
+{
+	Node *cur = head;
+	while (cur != NULL) 
+	{
+		if (cur->data == val)
+		{
+			if (cur->prev == NULL)
+			{
+				head = cur->next;
+			}
+			else
+			{
+				cur->prev->next = cur->next;
+			}
 
+			if (cur->next == NULL)
+			{
+				tail = cur->prev;
+			}
+			else
+			{
+				cur->next->prev = cur->prev;
+			}
+			Node *deleteMe = cur;
+			cur = cur->next;
+			delete deleteMe;
+		}
+		else 
+		{
+			cur = cur->next;
+		}
+	}
+}
