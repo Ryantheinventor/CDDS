@@ -17,12 +17,12 @@ int main()
 	bTree.insert(6);
 	bTree.insert(7);
 	bTree.insert(10);
-	tBinaryTree<int>::vertex found;
+	tBinaryTree<int>::vertex *found;
 	for (int i = 0; i < 11; i++) 
 	{
 		if (bTree.search(i, found))
 		{
-			std::cout << "Found:" << found.data << "\n";
+			std::cout << "Found:" << found->data << "\n";
 		}
 		else 
 		{
@@ -30,11 +30,17 @@ int main()
 		}
 	}
 	
-	tBinaryTree<int> bTree2 = bTree;
+	/*tBinaryTree<int> bTree2 = bTree;
 	tBinaryTree<int> bTree3;
-	bTree3 = bTree;
+	bTree3 = bTree;*/
 
+	bTree.printInOrder();
+	bTree.printPostOrder();
+	bTree.printPreOrder();
 
-	
+	tBinaryTree<int>::vertex *found2;
+	bTree.search(8, found2);
+	bTree.remove(found2);
+	bTree.printInOrder();
 	return 0;
 }

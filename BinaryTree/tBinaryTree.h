@@ -1,5 +1,8 @@
 #pragma once
 #include <vector>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
 template<typename T>
 class tBinaryTree 
 {
@@ -33,8 +36,14 @@ public:
 	~tBinaryTree();
 
 	void insert(const T &value);
-	bool search(const T &value, vertex &found);
+	bool search(const T &value, vertex *&found);
 	void clear();
+
+	void printPreOrder();
+	void printPostOrder();
+	void printInOrder();
+
+	void remove(vertex *target);
 
 private:
 	std::vector<vertex *> vertices;
@@ -44,9 +53,13 @@ private:
 	void rVertexDel(vertex &del);
 	void rCopy(vertex &cur);
 
+	void rPrintPreOrder(vertex &cur);
+	void rPrintPostOrder(vertex &cur);
+	void rPrintInOrder(vertex &cur);
+
 };
 
-
+#pragma region Constructors/Destructors
 template<typename T>
 tBinaryTree<T>::tBinaryTree()
 {
@@ -77,6 +90,7 @@ tBinaryTree<T>::~tBinaryTree()
 	rVertexDel(*root);
 	delete root;
 }
+#pragma endregion
 
 template<typename T>
 void tBinaryTree<T>::clear() 
@@ -99,7 +113,6 @@ void tBinaryTree<T>::rCopy(vertex &cur)
 	}
 }
 
-
 template<typename T>
 void tBinaryTree<T>::rVertexDel(vertex &del) 
 {
@@ -114,7 +127,6 @@ void tBinaryTree<T>::rVertexDel(vertex &del)
 		delete del.right;
 	}
 }
-
 
 template<typename T>
 void tBinaryTree<T>::insert(const T &value) 
@@ -164,7 +176,7 @@ void tBinaryTree<T>::insert(const T &value)
 }
 
 template<typename T>
-bool tBinaryTree<T>::search(const T &value, vertex &found) 
+bool tBinaryTree<T>::search(const T &value, vertex *&found) 
 {
 	vertex *cur = root;
 	while (cur->hasLeft() || cur->hasRight()) 
@@ -172,7 +184,7 @@ bool tBinaryTree<T>::search(const T &value, vertex &found)
 
 		if (cur->data == value) 
 		{
-			found = *cur;
+			found = cur;
 			return true;
 		}
 		if (value < cur->data)
@@ -200,8 +212,167 @@ bool tBinaryTree<T>::search(const T &value, vertex &found)
 	}
 	if (cur->data == value)
 	{
-		found = *cur;
+		found = cur;
 		return true;
 	}
 	return false;
 }
+
+template<typename T>
+void tBinaryTree<T>::remove(vertex *target) 
+{
+
+	if (target == root) 
+	{
+		if (root->hasLeft() && root->hasRight()) 
+		{
+			root = target->right;
+			rCopy(*target->left);
+			rVertexDel(*target->left);
+			delete target->left;
+			delete target;
+		}
+		else if (root->hasLeft() && !root->hasRight()) 
+		{
+			root = root->left;
+			delete target;
+		}
+		else if (!root->hasLeft() && root->hasRight()) 
+		{
+			root = root->right;
+			delete target;
+		}
+		else 
+		{
+			root = NULL;
+			delete target;
+		}
+	}
+	else 
+	{
+		vertex *preVert = root;
+		while (true)
+		{
+			if (preVert->data < target->data && preVert->hasRight())
+			{
+				if (preVert->right == target)
+				{
+					preVert->right = NULL;
+					if (target->hasLeft())
+					{
+						rCopy(*target->left);
+						rVertexDel(*target->left);
+						delete target->left;
+					}
+					if (target->hasRight())
+					{
+						rCopy(*target->right);
+						rVertexDel(*target->right);
+						delete target->right;
+					}
+					delete target;
+					break;
+				}
+				else
+				{
+					preVert = preVert->right;
+				}
+			}
+
+			if (preVert->data > target->data && preVert->hasLeft())
+			{
+				if (preVert->left == target)
+				{
+					preVert->left = NULL;
+					if (target->hasLeft())
+					{
+						rCopy(*target->left);
+						rVertexDel(*target->left);
+						delete target->left;
+					}
+					if (target->hasRight())
+					{
+						rCopy(*target->right);
+						rVertexDel(*target->right);
+						delete target->right;
+					}
+					delete target;
+					break;
+				}
+				else
+				{
+					preVert = preVert->left;
+				}
+			}
+		}
+	}
+}
+
+#pragma region Print Pre-order
+template<typename T>
+void tBinaryTree<T>::printPreOrder()
+{
+	rPrintPreOrder(*root);
+	std::cout << "\n";
+}
+
+template<typename T>
+void tBinaryTree<T>::rPrintPreOrder(vertex &cur)
+{
+	std::cout << cur.data << " ";
+	if (cur.hasLeft())
+	{
+		rPrintPreOrder(*cur.left);
+	}
+	if (cur.hasRight())
+	{
+		rPrintPreOrder(*cur.right);
+	}
+}
+#pragma endregion
+
+#pragma region Print Post-order
+template<typename T>
+void tBinaryTree<T>::printPostOrder() 
+{
+	rPrintPostOrder(*root);
+	std::cout << "\n";
+}
+
+template<typename T>
+void tBinaryTree<T>::rPrintPostOrder(vertex &cur)
+{
+	if (cur.hasLeft())
+	{
+		rPrintPostOrder(*cur.left);
+	}
+	if (cur.hasRight())
+	{
+		rPrintPostOrder(*cur.right);
+	}
+	std::cout << cur.data << " ";
+}
+#pragma endregion
+
+#pragma region Print In-order
+template<typename T>
+void tBinaryTree<T>::printInOrder() 
+{
+	rPrintInOrder(*root);
+	std::cout << "\n";
+}
+
+template<typename T>
+void tBinaryTree<T>::rPrintInOrder(vertex &cur)
+{
+	if (cur.hasLeft())
+	{
+		rPrintInOrder(*cur.left);
+	}
+	std::cout << cur.data << " ";
+	if (cur.hasRight())
+	{
+		rPrintInOrder(*cur.right);
+	}
+}
+#pragma endregion
