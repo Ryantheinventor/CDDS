@@ -35,13 +35,13 @@ class tDoubleLinkList
 		}
 		bool operator!=(const iterator &rhs) const// returns false if the iterator does not point to the same node
 		{
-			return !operator==(rhs);//No clue if this works
+			return !(*this == rhs);
 		}
 		T &operator*() const// returns a reference to the element pointed to by the current node
 		{
 			return cur->data;
 		}
-		iterator operator++() // pre-increment (returns a reference to this iterator after it is incremented)
+		iterator &operator++() // pre-increment (returns a reference to this iterator after it is incremented)
 		{
 			cur = cur->next;
 			return *this;
@@ -52,7 +52,7 @@ class tDoubleLinkList
 			cur = cur->next;
 			return newIt;
 		}
-		iterator operator--() // pre-increment (returns a reference to this iterator after it is incremented)
+		iterator &operator--() // pre-increment (returns a reference to this iterator after it is incremented)
 		{
 			cur = cur->prev;
 			return *this;
@@ -128,6 +128,7 @@ tDoubleLinkList<T>::tDoubleLinkList(const tDoubleLinkList &other)
 template <typename T>
 tDoubleLinkList<T> &tDoubleLinkList<T>::operator=(const tDoubleLinkList &rhs)
 {
+	clear();
 	Node *cur = rhs.head;
 	while (cur != nullptr)
 	{

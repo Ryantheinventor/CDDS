@@ -47,8 +47,8 @@ int main()
 		std::cout << (*it) << std::endl;
 	}
 	std::cout << "\n";
-	//tDoubleLinkList<int> aList;
-	//aList = dList;//assignment 
+	tDoubleLinkList<int> aList;
+	aList = dList;//assignment 
 
 	//dList.push_front(100);
 
