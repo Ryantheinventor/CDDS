@@ -16,17 +16,17 @@ public:
 
 		bool hasLeft() 
 		{
-			return left != NULL;
+			return left != nullptr;
 		}
 		bool hasRight()
 		{
-			return right != NULL;
+			return right != nullptr;
 		}
 
 		vertex() 
 		{
-			left = NULL;
-			right = NULL;
+			left = nullptr;
+			right = nullptr;
 		}
 	};
 
@@ -63,7 +63,7 @@ private:
 template<typename T>
 tBinaryTree<T>::tBinaryTree()
 {
-	root = NULL;
+	root = nullptr;
 	vertices = std::vector<vertex *>();
 }
 
@@ -96,7 +96,7 @@ template<typename T>
 void tBinaryTree<T>::clear() 
 {
 	rVertexDel(*root);
-	root = NULL;
+	root = nullptr;
 }
 
 template<typename T>
@@ -133,7 +133,7 @@ void tBinaryTree<T>::insert(const T &value)
 {
 	vertex *newVertex = new vertex();
 	newVertex->data = value;
-	if (root == NULL) 
+	if (root == nullptr)
 	{
 		root = newVertex;
 		return;
@@ -244,7 +244,7 @@ void tBinaryTree<T>::remove(vertex *target)
 		}
 		else 
 		{
-			root = NULL;
+			root = nullptr;
 			delete target;
 		}
 	}
@@ -257,7 +257,7 @@ void tBinaryTree<T>::remove(vertex *target)
 			{
 				if (preVert->right == target)
 				{
-					preVert->right = NULL;
+					preVert->right = nullptr;
 					if (target->hasLeft())
 					{
 						rCopy(*target->left);
@@ -283,7 +283,7 @@ void tBinaryTree<T>::remove(vertex *target)
 			{
 				if (preVert->left == target)
 				{
-					preVert->left = NULL;
+					preVert->left = nullptr;
 					if (target->hasLeft())
 					{
 						rCopy(*target->left);

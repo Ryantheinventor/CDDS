@@ -9,8 +9,8 @@ class tDoubleLinkList
 	struct Node
 	{
 		T data;// data for the element stored
-		Node *next = NULL;// pointer to node following this node
-		Node *prev = NULL;
+		Node *next = nullptr;// pointer to node following this node
+		Node *prev = nullptr;
 	};
 
 	Node *head;// pointer to head of linked list
@@ -23,7 +23,7 @@ class tDoubleLinkList
 	public:
 		iterator()// initializes an empty iterator pointing to null
 		{
-			cur = NULL;
+			cur = nullptr;
 		}
 		iterator(Node *startNode)// initializes an iterator pointing to the given node
 		{
@@ -73,7 +73,7 @@ public:
 	}
 	iterator end()
 	{
-		return NULL;
+		return nullptr;
 	}
 	iterator rbegin()
 	{
@@ -81,7 +81,7 @@ public:
 	}
 	iterator rend()
 	{
-		return NULL;
+		return nullptr;
 	}
 	tDoubleLinkList(); // initializes head to null
 	tDoubleLinkList(const tDoubleLinkList &other);// copy-constructor
@@ -110,15 +110,15 @@ public:
 template <typename T>
 tDoubleLinkList<T>::tDoubleLinkList()
 {
-	head = NULL;
-	tail = NULL;
+	head = nullptr;
+	tail = nullptr;
 }
 
 template <typename T>
 tDoubleLinkList<T>::tDoubleLinkList(const tDoubleLinkList &other)
 {
 	Node *cur = other.head;
-	while (cur != NULL) 
+	while (cur != nullptr)
 	{
 		push_back(cur->data);
 		cur = cur->next;
@@ -129,7 +129,7 @@ template <typename T>
 tDoubleLinkList<T> &tDoubleLinkList<T>::operator=(const tDoubleLinkList &rhs)
 {
 	Node *cur = rhs.head;
-	while (cur != NULL)
+	while (cur != nullptr)
 	{
 		push_back(cur->data);
 		cur = cur->next;
@@ -148,7 +148,7 @@ void tDoubleLinkList<T>::push_front(const T &val)
 {
 	Node *newNode = new Node();
 	newNode->data = val;
-	if (head == NULL && tail == NULL)
+	if (head == nullptr && tail == nullptr)
 	{
 		head = newNode;
 		tail = newNode;
@@ -167,7 +167,7 @@ void tDoubleLinkList<T>::push_back(const T &val)
 {
 	Node *newNode = new Node();
 	newNode->data = val;
-	if (head == NULL && tail == NULL)
+	if (head == nullptr && tail == nullptr)
 	{
 		head = newNode;
 		tail = newNode;
@@ -187,13 +187,13 @@ void tDoubleLinkList<T>::pop_front()
 	Node *cur = head;
 	if (head == tail)
 	{
-		head = NULL;
-		tail = NULL;
+		head = nullptr;
+		tail = nullptr;
 	}
 	else 
 	{
 		head = head->next;
-		head->prev = NULL;
+		head->prev = nullptr;
 	}
 	delete cur;
 }
@@ -204,13 +204,13 @@ void tDoubleLinkList<T>::pop_back()
 	Node *cur = tail;
 	if (head == tail)
 	{
-		head = NULL;
-		tail = NULL;
+		head = nullptr;
+		tail = nullptr;
 	}
 	else
 	{
 		tail = tail->prev;
-		tail->next = NULL;
+		tail->next = nullptr;
 	}
 	delete cur;
 }
@@ -218,7 +218,7 @@ void tDoubleLinkList<T>::pop_back()
 template <typename T>
 bool tDoubleLinkList<T>::empty() const
 {
-	return head == NULL;
+	return head == nullptr;
 }
 
 
@@ -273,7 +273,7 @@ void tDoubleLinkList<T>::resize(size_t newSize)
 	{
 		i++;
 		Node *nodeAtI = head;
-		while (nodeAtI->next != NULL && i < newSize) 
+		while (nodeAtI->next != nullptr && i < newSize)
 		{
 			nodeAtI = nodeAtI->next;
 			i++;
@@ -281,9 +281,9 @@ void tDoubleLinkList<T>::resize(size_t newSize)
 		if (i == newSize) 
 		{
 			Node *next = nodeAtI->next;
-			nodeAtI->next = NULL;
+			nodeAtI->next = nullptr;
 			tail = nodeAtI;
-			while (next != NULL)
+			while (next != nullptr)
 			{
 				Node *cur = next;
 				next = next->next;
@@ -305,11 +305,11 @@ template <typename T>
 void tDoubleLinkList<T>::remove(const T &val)
 {
 	Node *cur = head;
-	while (cur != NULL) 
+	while (cur != nullptr)
 	{
 		if (cur->data == val)
 		{
-			if (cur->prev == NULL)
+			if (cur->prev == nullptr)
 			{
 				head = cur->next;
 			}
@@ -318,7 +318,7 @@ void tDoubleLinkList<T>::remove(const T &val)
 				cur->prev->next = cur->next;
 			}
 
-			if (cur->next == NULL)
+			if (cur->next == nullptr)
 			{
 				tail = cur->prev;
 			}
