@@ -87,15 +87,23 @@ template<typename T>
 tBinaryTree<T>::~tBinaryTree() 
 {
 	//remove all nodes
-	rVertexDel(*root);
-	delete root;
+	if (root != nullptr) 
+	{
+		rVertexDel(*root);
+		delete root;
+	}
+	
 }
 #pragma endregion
 
 template<typename T>
 void tBinaryTree<T>::clear() 
 {
-	rVertexDel(*root);
+	if (root != nullptr)
+	{
+		rVertexDel(*root);
+		delete root;
+	}
 	root = nullptr;
 }
 

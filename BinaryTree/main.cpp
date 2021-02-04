@@ -42,5 +42,10 @@ int main()
 	bTree.search(8, found2);
 	bTree.remove(found2);
 	bTree.printInOrder();
+
+	tBinaryTree<int> clearTree = tBinaryTree<int>();
+	clearTree.clear();
+
+
 	return 0;
 }
