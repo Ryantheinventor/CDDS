@@ -189,7 +189,6 @@ bool tBinaryTree<T>::search(const T &value, vertex *&found)
 	vertex *cur = root;
 	while (cur->hasLeft() || cur->hasRight()) 
 	{
-
 		if (cur->data == value) 
 		{
 			found = cur;
@@ -203,6 +202,7 @@ bool tBinaryTree<T>::search(const T &value, vertex *&found)
 			}
 			else 
 			{
+				found = nullptr;
 				return false;
 			}
 		}
@@ -214,6 +214,7 @@ bool tBinaryTree<T>::search(const T &value, vertex *&found)
 			}
 			else
 			{
+				found = nullptr;
 				return false;
 			}
 		}
@@ -223,6 +224,7 @@ bool tBinaryTree<T>::search(const T &value, vertex *&found)
 		found = cur;
 		return true;
 	}
+	found = nullptr;
 	return false;
 }
 
